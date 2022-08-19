@@ -7,19 +7,16 @@ use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 
 fn handle_connection(mut stream: TcpStream) {
-    let mut data = [0 as u8; 50];
-    match stream.read(&mut data) {
-        Ok(_size) => {
-            // Send back PONG regardless of what's been sent
-            stream.write(b"+PONG\r\n").unwrap();
-            ()
-        }
-        Err(_) => {
-            println!(
-                "An error has occurred, terminating connection with {}",
-                stream.peer_addr().unwrap()
-            );
-            ()
+    // Loop to read input from client and send a response back
+    loop {
+        // Initialize a buffer of 50 bytes
+        let mut data = [0 as u8; 50];
+        match stream.read(&mut data) {
+            Ok(_size) => {
+                // Send back PONG regardless of what's been sent
+                stream.write(b"+PONG\r\n").unwrap();
+            }
+            Err(_) => {}
         }
     }
 }
